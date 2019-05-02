@@ -28,8 +28,8 @@ DATABASES = {
 
 ### 컨테이터 실행
 터미널에 아래 명령어를 입력합니다. 컨테이너가 실행되면 localhost:8000으로 접속 가능합니다.
-- docker-compose up
-컨테이너 환경 안으로 들어가려면 아래 명령어를 쓸 수 있습니다.
+- docker-compose up  
+컨테이너 안으로 들어가기 위해 아래 명령어를 쓸 수 있습니다.
 - docker-compose exec web bash
 
 ## todo

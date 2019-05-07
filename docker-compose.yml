@@ -4,14 +4,16 @@ services:
   db:
     image: postgres
     volumes:
-      - ./data/:/var/lib/postgresql/data/
+      - ./_db/:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=sampledb
       - POSTGRES_USER=sampleuser
       - POSTGRES_PASSWORD=samplepw
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8
-  web:
-    build: .
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile-django
     environment:
       - DJANGO_DB_HOST=db #services:db
       - DJANGO_DB_PORT=5432
@@ -23,10 +25,19 @@ services:
     depends_on:
       - db
     volumes:
-      - ./django/:/code/
+      - ./backend/:/app/backend
     command:
       - bash
       - -c
       - |
         /wait-for-it.sh db:5432 -t 10
         python manage.py runserver 0:8000
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile-react
+    volumes:
+      - ./frontend/:/app/frontend/
+    ports:
+      - "4000:3000"
+    command: ["npm", "start"]
